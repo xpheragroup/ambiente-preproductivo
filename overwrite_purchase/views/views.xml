@@ -1,0 +1,13 @@
+<odoo>
+    <data>
+        <report 
+            string="Solicitud de Cotizacion" 
+            id="report_purchase_quotation" 
+            model="purchase.order" 
+            report_type="qweb-pdf"
+            name="purchase.report_purchasequotation" 
+            file="purchase.report_purchasequotation"
+            print_report_name="'Solicitud de Cotización - %s' % (object.name)"
+        />
+    </data>
+</odoo>
