@@ -12,6 +12,7 @@ class PurchaseOrder(models.Model):
     _inherit = 'purchase.order'
 
     name = fields.Char(default='Nuevo')
+    is_gift = fields.Boolean('Es regalo')
 
     codigo_solicitud_cotizacion = fields.Char()
 
@@ -68,11 +69,14 @@ class PurchaseOrder(models.Model):
 
     @api.model
     def create(self, vals):
-        if vals.get('name', 'New') == 'New':
+        if vals.get('name', 'New') == 'New' or  vals.get('name', 'Nuevo') == 'Nuevo':
             seq_date = None
             if 'date_order' in vals:
-                seq_date = fields.Datetime.context_timestamp(self, fields.Datetime.to_datetime(vals['date_order']))
-            vals['name'] = self.env['ir.sequence'].next_by_code('purchase.order_sdc', sequence_date=seq_date) or '/'
+                    seq_date = fields.Datetime.context_timestamp(self, fields.Datetime.to_datetime(vals['date_order']))
+            if not vals.get('is_gift', False):
+                vals['name'] = self.env['ir.sequence'].next_by_code('purchase.order_sdc', sequence_date=seq_date) or '/'
+            else:
+                vals['name'] = self.env['ir.sequence'].next_by_code('purchase.gift', sequence_date=seq_date) or '/'
             vals['codigo_solicitud_cotizacion'] = vals['name']
         return super(PurchaseOrder, self).create(vals)
 
@@ -87,7 +91,8 @@ class PurchaseOrder(models.Model):
                         and order.amount_total < self.env.company.currency_id._convert(
                             order.company_id.po_double_validation_amount, order.currency_id, order.company_id, order.date_order or fields.Date.today()))\
                     or order.user_has_groups('purchase.group_purchase_manager'):
-                order.write({'name': self.env['ir.sequence'].next_by_code('purchase.order') or '/'})
+                if not self.is_gift:
+                    order.write({'name': self.env['ir.sequence'].next_by_code('purchase.order') or '/'})
                 order.button_approve()
             else:
                 order.write({'state': 'to approve'})
