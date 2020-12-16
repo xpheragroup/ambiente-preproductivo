@@ -1,8 +1,10 @@
-from odoo import models
+from odoo import models, fields
 
 
 class button_confirm(models.TransientModel):
     _name = "overwrite_purchase.button.confirm"
+
+    name = fields.Char()
 
     def button_confirm(self):
         query = [['id', '=', self._context['purchase']]]
