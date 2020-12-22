@@ -529,8 +529,8 @@ class Picking(models.Model):
                         line.product_uom_id.factor_inv
             for key, qty_done in products.items():
                 product, lot, dest = key.split('-')
-                quant = self.env['stock.quant'].search(['&', ['product_id', '=', product], [
-                    'lot_id', '=', lot], ['location_id', '=', dest]])
+                quant = self.env['stock.quant'].search(
+                    [['product_id', '=', int(product)], ['lot_id', '=', int(lot)], ['location_id', '=', int(dest)]])
                 quant_sum = sum(map(lambda q: q.quantity *
                                     q.product_uom_id.factor_inv, quant))
                 if quant_sum < qty_done:
