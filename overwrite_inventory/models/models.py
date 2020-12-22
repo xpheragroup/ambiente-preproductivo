@@ -519,8 +519,12 @@ class Picking(models.Model):
         if not self.partner_id:
             products = {}
             for line in self.move_line_ids:
-                key = str(line.product_id.id) + '-' + \
-                    str(line.lot_id.id) + '-' + str(line.location_id.id)
+                if not line.lot_id.id:
+                    key = str(line.product_id.id) + '-0-' + \
+                        str(line.location_id.id)
+                else:
+                    key = str(line.product_id.id) + '-' + \
+                        str(line.lot_id.id) + '-' + str(line.location_id.id)
                 if products.get(key, False):
                     products[key] += line.qty_done * \
                         line.product_uom_id.factor_inv
