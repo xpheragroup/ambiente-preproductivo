@@ -9,6 +9,11 @@ from odoo.tools.float_utils import float_round, float_compare, float_is_zero
 
 
 class Inventory(models.Model):
+    _name = 'stock.inventory'
+    _inherit = ['stock.inventory', 'mail.thread']
+
+
+class Inventory(models.Model):
     _inherit = "stock.inventory"
 
     AJUSTES = [('conteo', 'Por conteo'), ('diferencia',
