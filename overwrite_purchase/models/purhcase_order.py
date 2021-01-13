@@ -59,25 +59,6 @@ class PurchaseOrder(models.Model):
         else:
             self.button_confirm_second_confirm()
 
-    # def button_confirm(self):
-    #    for order in self:
-    #         if order.state not in ['draft', 'sent']:
-    #             continue
-    #         order._add_supplier_to_product()
-    #         # Deal with double validation process
-    #         if order.company_id.po_double_validation == 'one_step'\
-    #                 or (order.company_id.po_double_validation == 'two_step'
-    #                     and order.amount_total < self.env.company.currency_id._convert(
-    #                         order.company_id.po_double_validation_amount, order.currency_id, order.company_id, order.date_order or fields.Date.today()))\
-    #                 or order.user_has_groups('purchase.group_purchase_manager'):
-    #             if not self.is_gift:
-    #                 order.write(
-    #                     {'name': self.env['ir.sequence'].next_by_code('purchase.order') or '/'})
-    #             order.button_approve()
-    #         else:
-    #             order.write({'state': 'to approve'})
-    #     return True
-
     def button_confirm_second_confirm(self):
         for order in self:
             if order.state not in ['draft', 'sent']:
