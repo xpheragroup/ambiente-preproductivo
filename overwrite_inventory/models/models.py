@@ -688,3 +688,20 @@ class StockValuationLayer(models.Model):
 
     _inherit = 'stock.valuation.layer'
     categ_id = fields.Many2one(store=True)
+
+
+class StockMoveLine(models.Model):
+
+    _inherit = 'stock.move.line'
+
+    exists_qty = fields.Float(
+        'Exists Quantity', compute='_compute_exists_qty',
+        store=True, help='Cantidad existente en inventario')
+
+    @api.depends('qty_done')
+    def _compute_exists_qty(self):
+        for move in self:
+            if move.location_dest_id.usage == 'internal':
+                move.exists_qty = move.qty_done
+            else:
+                move.exists_qty = -1 * move.qty_done
