@@ -2,9 +2,8 @@ import re
 from odoo import api, models, _
 from odoo.exceptions import UserError
 
-EMAIL_REGEX = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
+EMAIL_REGEX = '^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})*(\.\w{2,3})+$'
 PHONE_REGEX = '^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$'
-
 
 def regex_validation_message(field, regex, message):
     if field:
@@ -15,7 +14,7 @@ def regex_validation_message(field, regex, message):
 
 def validation_email(email):
     message = _(
-        'El correo "{}" no tiene el formato requerido: correo@dominio.dominio')
+        'El correo "{}" no tiene el formato requerido: correo@dominio.dominio o correo@dominio.dominio.dominio')
     return regex_validation_message(email, EMAIL_REGEX, message.format(email))
 
 
