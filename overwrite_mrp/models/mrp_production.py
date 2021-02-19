@@ -48,8 +48,3 @@ class Override_Bom_Production(models.Model):
                 if len(bom_line.child_line_ids) == 0:
                     moves.append(production._get_move_raw_values(bom_line, line_data))
         return moves
-    
-    def _get_move_raw_values(self, bom_line, line_data):
-        data = super()._get_move_raw_values(bom_line, line_data)
-        data['std_quantity'] = bom_line.product_qty * self.product_uom_qty
-        return data
