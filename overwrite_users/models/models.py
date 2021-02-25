@@ -2,7 +2,7 @@
 
 from odoo import models, fields, api
 
-
+#Domain rules for point managers in inventory and purchases. model=res.users
 class overwrite_user(models.Model):
      _inherit = 'res.users'
 
