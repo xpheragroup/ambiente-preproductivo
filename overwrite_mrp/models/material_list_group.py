@@ -38,11 +38,3 @@ class BomRegister(models.Model):
         data = {'material_lists': boms, 'products': products}
         #print(data)
         return data
-
-
-
-### This model Should not exist
-class BomGroup(models.Model):
-
-    _name = 'overwrite_mrp.bom_group'
-    _description = 'This model Should not exist'
