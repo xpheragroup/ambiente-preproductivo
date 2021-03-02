@@ -13,7 +13,7 @@ class BomRegister(models.Model):
 
     def add_product(data, bom, total):
         if bom.product_id.id in data:
-            data[bom.product_id.id]['qty'] = bom.product_qty * total
+            data[bom.product_id.id]['qty'] += bom.product_qty * total
         else:
             data[bom.product_id.id] = {
                 'product': bom.product_id,
@@ -36,7 +36,7 @@ class BomRegister(models.Model):
                     BomRegister.add_product(products, child_bom, bom.total)
             
         data = {'material_lists': boms, 'products': products}
-        print(data)
+        #print(data)
         return data
 
 
