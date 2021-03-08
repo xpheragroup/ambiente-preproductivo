@@ -1,0 +1,37 @@
+<odoo>
+
+    <record model="ir.ui.view" id="order_sale_requisition">
+        <field name="name">order.sale</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="attributes">
+                <attribute name="string">Cliente o Usuario</attribute>
+            </xpath>
+            <xpath expr="//field[@name='partner_shipping_id']" position="after">
+                <field name="requisicion_interna_sale"/>
+            </xpath>
+            
+            <notebook position="inside">
+                <page string="Tipo de Requisición">
+                    <group>
+                        <field name="requisicion_interna_sale"/>
+                        <!--<field name="session_ids"/>-->
+                    </group>
+                </page>
+            </notebook>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="sale_list_action">
+        <field name="name">Requisiciones de Existencia</field>
+        <field name="res_model">sale.order</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="requisitions_sale" name="Requisiciones de Existencia"
+        parent="requisition_menu"
+        action="sale_list_action"/>
+    
+
+</odoo>

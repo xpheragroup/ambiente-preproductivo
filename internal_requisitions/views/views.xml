@@ -1,0 +1,37 @@
+<odoo>
+
+    <!--Views Internal Requisitions-->
+    <record model="ir.actions.act_window" id="internal_list_requisitions">
+      <field name="name">Requisitions</field>
+      <field name="res_model">internal.requisitions</field>
+      <field name="view_mode">tree,form</field>
+      <field name="help" type="html">
+        <p class="0_view_nocontent_smiling_face">Create the first course
+        </p>
+      </field>
+    </record>
+
+    <menuitem id="main_internal_requisitions_menu" name="Requisiciones"
+            web_icon="internal_requisitions,static/Internal Requisitions.png"
+            groups="group_internal_requisitions_manager"/>
+            
+    <menuitem id="internal_requisitions_menu" name="Internal Requisitions"
+            groups="group_internal_requisitions_manager"
+            parent="main_internal_requisitions_menu"/>
+
+    <menuitem id="requisitions_menu" name="Requisitions"
+            parent="internal_requisitions_menu"
+            groups="group_internal_requisitions_manager"
+            action="internal_list_requisitions"/>
+    
+    <menuitem id="requisition_menu" name="Requisiciones"
+            groups="group_internal_requisitions_manager"
+            parent="main_internal_requisitions_menu"/>
+
+
+
+
+
+    
+
+</odoo>
