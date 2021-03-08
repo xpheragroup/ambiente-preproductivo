@@ -11,3 +11,5 @@ class Override_Bom_Line(models.Model):
         string='Grupo de Alimento',
         comodel_name='overwrite_mrp.food_group'
         )
+
+
