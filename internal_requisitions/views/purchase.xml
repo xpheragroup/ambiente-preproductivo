@@ -6,11 +6,24 @@
         <field name="inherit_id" ref="purchase.purchase_order_form"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='partner_id']" position="attributes">
-                <attribute name="string">Proveedor o Usuario</attribute>
+                <attribute name="string">Proveedor</attribute>
             </xpath>
             <xpath expr="//field[@name='partner_id']" position="after">
                 <field name="requisicion_interna_purchase"/>
+                <field name="requisicion_interna_production" attrs="{'invisible': ['|',('requisicion_interna_purchase', '=', False),('requisicion_interna_inventory', '=', True)]}"/>
+                <field name="requisicion_interna_inventory" attrs="{'invisible': ['|',('requisicion_interna_purchase', '=', False),('requisicion_interna_production', '=', True)]}"/>
+                <field name="mrp_production_ids" widget="many2many_tags" attrs="{'invisible': ['|',('requisicion_interna_production', '=', False),('show_internal_purchase', '=', True)]}"/>
+                <field name="stock_picking_ids" widget="many2many_tags" attrs="{'invisible': ['|',('requisicion_interna_inventory', '=', False),('show_internal_purchase', '=', True)]}"/>
+                <field name="show_internal_purchase" attrs="{'invisible': [('stock_picking_ids', '=', []),('mrp_production_ids', '=', [])]}"/>
             </xpath>
+            <xpath expr="//button[@name='action_rfq_send']" position="before">
+                <button name="button_continue" states="borrador compra" string="Continuar" type="object" class="oe_highlight"/>
+                <button name="button_quote" states="Borrador Requisición" string="Cotizar" type="object" class="oe_highlight"/>
+            </xpath>
+            <xpath expr="//button[@name='button_confirm']" position="after">
+                <button name="button_draft" attrs="{'invisible': [('state','not in',('Borrador Requisición','draft'))]}" string="Volver a Borrador" type="object"/>
+            </xpath>
+            
             
             <notebook position="inside">
                 <page string="Tipo de Requisición">
