@@ -477,7 +477,11 @@ class Picking(models.Model):
 
     def get_root_warehouse(self, location_id):
         stock_location = self.env['stock.location']
-        current = stock_location.search([['id', '=', location_id]])
+        #En sale.order estaba tomando dos warehouse, se estaba duplicando el warehouse
+        #para varias compañias, por lo tanto se establece the current company para que 
+        #tome unicamente un warehouse.
+        company_ids = self.env.user.company_id.id
+        current = stock_location.search([['id', '=', location_id and 'company_id' == company_ids]])
         while current.location_id and current.location_id.location_id:
             current = current.location_id
         warehouse = self.env['stock.warehouse'].search(
@@ -485,10 +489,12 @@ class Picking(models.Model):
         return warehouse
 
     def set_warehouse(self, vals):
+
         if vals.get('location_id', False):
             warehouse_orig = self.get_root_warehouse(vals['location_id'])
             if warehouse_orig:
                 vals['warehouse_orig'] = warehouse_orig.id
+
         if vals.get('location_dest_id', False):
             warehouse_dest = self.get_root_warehouse(vals['location_dest_id'])
             if warehouse_dest:
@@ -551,6 +557,7 @@ class Picking(models.Model):
                             raise UserError(_('No se puede realizar un movimiento con mayor cantidad de producto terminado que en los anteriores movimientos. {}'.format(
                                 move.product_id.name)))
 
+
     def _check_intrawarehouse_moves(self, vals):
         if vals.get('warehouse_orig', False):
             current_user = self.env['res.users'].browse(self.env.uid)
@@ -560,6 +567,7 @@ class Picking(models.Model):
             if current_user not in responsables:
                 raise UserError(
                     _('Los movimientos intraalmacen solo la puede realizar un usuario responsable del almacen destino'))
+
 
     def button_validate(self):
         if not self.partner_id:
